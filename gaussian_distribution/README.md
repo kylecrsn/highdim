@@ -1,0 +1,3 @@
+### Exercise
+
+Generate `x` random points in `d`-dimensions according to a Gaussian distribution (0-mean, 1-variance). Compare findings to theoretical expectations.

@@ -1,1 +1,3 @@
-Exercise: Generate `x` uniformly random points on a `d`-dimensional sphere of radius `r`. Choose a projection method onto subspaces of varying dimensions `k` and calculate the differences in pair-wise distance between random points
+### Exercise
+
+Generate `x` uniformly random points on a `d`-dimensional sphere of radius `r`. Choose a projection method onto subspaces of varying dimensions `k` and calculate the differences in pair-wise distance between random points
