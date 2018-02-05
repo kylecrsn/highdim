@@ -10,7 +10,7 @@ import gdstlib as gdst
 
 
 # Genrate the projection of the given points from d-dimension to k-dimension
-def project_point_set(pts, dim, sdim):
+def project_point_set(pts, dim, sdim, rad):
   point_set = []
 
   for i in xrange(len(pts)):
@@ -23,9 +23,9 @@ def project_point_set(pts, dim, sdim):
 
 
 # Generate the scaled pairwise distances along with the overall and max percentage of error between vectors
-def projection_difference(distances_dim, distances_sdim, dim, sdim):
+def projection_difference(distances_dim, distances_sdim, dim, sdim, rad):
   distances_dim_scaled = np.array(distances_dim) * m.sqrt(sdim)
-  expected_distance = m.sqrt(2 * dim) * m.sqrt(sdim)
+  expected_distance = (m.sqrt(2 * dim) * m.sqrt(sdim)) * rad
   max_distance_dim_scaled = 0
   max_distance_sdim = 0
 

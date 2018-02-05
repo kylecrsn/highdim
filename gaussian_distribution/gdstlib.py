@@ -6,7 +6,7 @@ import scipy.stats as stats
 
 # Generate a random point based on a Gaussian distribution in the given dimension
 def gen_point(dim, rad, mean, std):
-  return np.random.normal(mean, std, dim) * rad
+  return list(np.random.normal(mean, std, dim) * rad)
 
 
 # Generate a specified number of points for the given dimension
@@ -92,7 +92,7 @@ def plot_distribution(pts, dim, ct, title, x_label, y_label, fname, *sdim):
   
   print("Mean: {}".format(mean))
   print("Variance: {}".format(variance))
-  print("Standard Deviation: {}".format(deviation))
+  print("Standard Deviation: {}\n".format(deviation))
 
   plt.title(title)
   plt.xlabel(x_label)
