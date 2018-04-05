@@ -148,7 +148,7 @@ if __name__ == '__main__':
   if args.verbose:
     print json.dumps(list_dists, sort_keys=True, indent=4, ensure_ascii=False)
 
-  # Calculate percentage error comparsing the scaled and projected characteristics
+  # Calculate percentage error comparing the scaled and projected characteristics
   tfn = details + '_percent_error.json'
   err = {'Average': {'Original Dimension Scaled': None, 'Projected Dimension': None}, 
         'Max': {'Original Dimension Scaled': None, 'Projected Dimension': None}}
