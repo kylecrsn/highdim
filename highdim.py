@@ -60,7 +60,7 @@ class GaussianCluster:
     self.points = []
 
   # Generate a cluster of the specified size
-  def generate_cluster(self):
+  def generate_points(self):
     for i in xrange(self.count):
       p = GaussianPoint(self.dimension, self.mean, self.standard_deviation)
       p.generate_values()

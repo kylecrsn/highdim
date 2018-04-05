@@ -50,7 +50,7 @@ if __name__ == '__main__':
   legend = "Dimension: " + str(dimension) + "\nNumber of Points: " + str(count)
 
   # Generate the cluster
-  cluster.generate_cluster()
+  cluster.generate_points()
   tfn = details + '_cluster.json'
   with io.open(tfn, 'w', encoding='utf-8') as f:
     f.write(unicode(json.dumps(cluster, cls=highdim.GaussianEncoder, sort_keys=True, indent=4, ensure_ascii=False)))
@@ -94,7 +94,7 @@ if __name__ == '__main__':
 
   original_list_dists = list_dists
   projected = args.projected
-  details = output_dir + '/c' + str(count) + '_d' + str(projected) + '_m' + str(mean) + '_s' + str(standard_deviation)
+  details = output_dir + '/c' + str(count) + '_p' + str(projected) + '_m' + str(mean) + '_s' + str(standard_deviation)
   legend = "Dimension: " + str(projected) + "\nNumber of Points: " + str(count)
 
   # Generate the projection of the cluster as a new cluster in lower-dimensional space
@@ -136,8 +136,9 @@ if __name__ == '__main__':
   if args.verbose:
     print json.dumps(list_angles, sort_keys=True, indent=4, ensure_ascii=False)
 
+  details = output_dir + '/c' + str(count) + '_d' + str(dimension) + '_p' + str(projected) + '_m' + str(mean) + '_s' + str(standard_deviation)
+
   # Calculate the scaled distances between each pair of points
-  # NOTE: The original dimension scaled should be similar to the projected
   list_dists = highdim.GaussianStats.generate_scaled_distances(original_list_dists, projected).tolist()
   tfn = details + '_scaled_cluster_dists.json'
   ifn = details + '_scaled_cluster_dists.png'
@@ -148,7 +149,6 @@ if __name__ == '__main__':
     print json.dumps(list_dists, sort_keys=True, indent=4, ensure_ascii=False)
 
   # Calculate percentage error comparsing the scaled and projected characteristics
-  details = output_dir + '/c' + str(count) + '_d' + str(dimension) + '_p' + str(projected) + '_m' + str(mean) + '_s' + str(standard_deviation)
   tfn = details + '_percent_error.json'
   err = {'Average': {'Original Dimension Scaled': None, 'Projected Dimension': None}, 
         'Max': {'Original Dimension Scaled': None, 'Projected Dimension': None}}
