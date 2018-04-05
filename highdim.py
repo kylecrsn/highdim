@@ -34,16 +34,17 @@ class GaussianPoint:
   # Calculate the pairwise angle between two points with respect to the origin using Law of Cosines
   @staticmethod
   def pairwise_angle(x, y):
-    origin = [0.0] * x.dimension
+    origin = GaussianPoint(x.dimension, x.mean, x.standard_deviation)
+    origin.values = [0.0] * x.dimension
     angle = 0.0
 
     xo_dist = GaussianPoint.pairwise_distance(x, origin)
     yo_dist = GaussianPoint.pairwise_distance(y, origin)
     xy_dist = GaussianPoint.pairwise_distance(x, y)
 
-    # angle = cos^-1(xo^2 + yo^2 - xy^2) / (2 * xo * yo)
+    # angle = cos^-1((xo^2 + yo^2 - xy^2) / (2 * xo * yo))
     length_sum = math.pow(xo_dist, 2) + math.pow(yo_dist, 2) - math.pow(xy_dist, 2)
-    angle = math.degrees(math.acos(length_sum) / (2 * xo_dist * yo_dist))
+    angle = math.degrees(math.acos(length_sum / (2 * xo_dist * yo_dist)))
 
     return angle
 
@@ -110,7 +111,7 @@ class GaussianCluster:
     projected_cluster = GaussianCluster(self.count, sdim, self.mean, self.standard_deviation)
 
     for i in xrange(self.count):
-      projected_point = GaussianPoint(self.dimension, self.mean, self.standard_deviation)
+      projected_point = GaussianPoint(sdim, self.mean, self.standard_deviation)
       for j in xrange(sdim):
         unit_point = GaussianPoint(self.dimension, 0.0, 1.0)
         unit_point.generate_values()
@@ -145,13 +146,13 @@ class GaussianStats:
   @staticmethod
   def pct_err_distance_average(distances, dim, sdim):
     average = np.sum(distances) / len(distances)
-    return pct_err(generate_expected_distance(dim, sdim), average)
+    return GaussianStats.pct_err(GaussianStats.generate_expected_distance(dim, sdim), average)
 
   # Calculate the percentage error between the expected distance value and the max of some
   # given distances
   @staticmethod
   def pct_err_distance_max(distances, dim, sdim):
-    expected_distance = generate_expected_distance(dim, sdim)
+    expected_distance = GaussianStats.generate_expected_distance(dim, sdim)
     max_distance = 0
 
     for i in xrange(len(distances)):
@@ -159,7 +160,7 @@ class GaussianStats:
       if dist > max_distance:
         max_distance = dist
 
-    return pct_err(expected_distance, expected_distance - max_distance)
+    return GaussianStats.pct_err(expected_distance, expected_distance - max_distance)
 
   # Create a plot visualizing the distribution of data
   @staticmethod
@@ -174,9 +175,8 @@ class GaussianStats:
     mplt.title(title)
     mplt.xlabel(x_label)
     mplt.ylabel(y_label)
-    mplt.figtext(0.5, padding, legend, horizontalalignment='center', fontsize=12, 
-          multialignment='left', 
-          bbox=dict(boxstyle="round", facecolor='#FFFFFF', ec="0.5", pad=0.5, alpha=1))
+    mplt.figtext(0.5, padding, legend, horizontalalignment='center', fontsize=12, multialignment='left', 
+                bbox=dict(boxstyle="round", facecolor='#FFFFFF', ec="0.5", pad=0.5, alpha=1))
     mplt.plot(sorted_points, fitted_curve, '-o')
     mplt.hist(sorted_points, density=True)
     mplt.savefig(fname, bbox_inches='tight')
@@ -188,12 +188,10 @@ class GaussianEncoder(json.JSONEncoder):
 
   def default(self, o):
     if isinstance(o, GaussianCluster):
-      cluster = {'count': o.count, 'dimension': o.dimension, 'mean': o.mean, 
-                'standard_deviation': o.standard_deviation, 'points': []}
+      cluster = {'count': o.count, 'dimension': o.dimension, 'mean': o.mean, 'standard_deviation': o.standard_deviation, 'points': []}
       for i in xrange(o.count):
         src = o.points[i]
-        point = {'dimension': src.dimension, 'mean': src.mean, 
-                'standard_deviation': src.standard_deviation, 'values': []}
+        point = {'dimension': src.dimension, 'mean': src.mean, 'standard_deviation': src.standard_deviation, 'values': []}
         for j in xrange(src.dimension):
           point['values'].append(src.values[j])
         cluster['points'].append(point)
