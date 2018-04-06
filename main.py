@@ -46,6 +46,7 @@ if __name__ == '__main__':
     os.makedirs(output_dir)
   except OSError as e:
     print('An error occurred while attempting to create the output directory')
+    sys.exit(1)
   details = output_dir + '/c' + str(count) + '_d' + str(dimension) + '_m' + str(mean) + '_s' + str(standard_deviation)
   legend = "Dimension: " + str(dimension) + "\nNumber of Points: " + str(count)
 
